@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block head %}
+<style>
+  body,
+  html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div id="visitor-app" class="vh-100 vw-100 position-relative">
+  <!-- Full-bleed Map -->
+  <div id="visitor-map" class="w-100 h-100"></div>
+
+  <!-- Floating Search Bar -->
+  <div
+    class="position-absolute top-0 start-50 translate-middle-x mt-3 px-3 w-100"
+    style="max-width: 540px; z-index: 1000"
+  >
+    <div class="glass-card d-flex align-items-center px-3 py-2 shadow-lg">
+      <span class="material-symbols-outlined me-2">search</span>
+      <input
+        id="search-poi"
+        type="text"
+        class="form-control form-control-sm bg-transparent border-0 text-light"
+        placeholder="Where are you heading in Konza?"
+      />
+    </div>
+  </div>
+
+  <!-- SOS Button -->
+  <button
+    id="sos-button"
+    class="btn btn-lg rounded-pill position-absolute"
+    style="
+      right: 1.2rem;
+      bottom: 5.5rem;
+      z-index: 1000;
+      background: var(--konza-red);
+      color: #fff;
+      box-shadow: 0 0 25px rgba(226, 37, 29, 0.6);
+    "
+  >
+    SOS
+  </button>
+
+  <!-- Bottom Sheet -->
+  <div
+    id="poi-sheet"
+    class="bottom-sheet rounded-top-4 shadow-lg"
+    style="z-index: 1000"
+  >
+    <div
+      class="sheet-handle mx-auto my-2 rounded-pill"
+      style="width: 40px; height: 4px; background: rgba(255, 255, 255, 0.4)"
+    ></div>
+    <div id="poi-sheet-content" class="p-3">
+      <div class="ratio ratio-16x9 rounded-4 overflow-hidden mb-3">
+        <img
+          id="poi-image"
+          src=""
+          alt="POI Image"
+          class="w-100 h-100 object-fit-cover"
+        />
+      </div>
+      <h5 id="poi-title" class="fw-semibold mb-1"></h5>
+      <p id="poi-type" class="text-uppercase small text-success fw-semibold mb-2"></p>
+      <p id="poi-description" class="small text-muted mb-2"></p>
+      <div class="p-2 rounded-3 bg-dark bg-opacity-50 mb-3">
+        <span class="small text-uppercase fw-bold" style="color: var(--konza-green)"
+          >Guru Fact</span
+        >
+        <p id="poi-fun-fact" class="small mb-0"></p>
+      </div>
+      <button
+        id="poi-go"
+        class="btn w-100 py-2 fw-semibold"
+        style="
+          background: linear-gradient(
+            135deg,
+            var(--konza-green),
+            var(--konza-red)
+          );
+          border: none;
+        "
+      >
+        LET'S GO
+      </button>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div
+    class="position-absolute bottom-0 start-50 translate-middle-x mb-2 px-3 w-100"
+    style="max-width: 540px; z-index: 1000"
+  >
+    <div class="glass-card nav-bottom d-flex justify-content-between px-3 py-2">
+      <button class="nav-item-btn active" data-action="map">
+        <span class="material-symbols-outlined d-block">explore</span>
+        <small>Map View</small>
+      </button>
+      <button class="nav-item-btn" data-action="navigate">
+        <span class="material-symbols-outlined d-block">navigation</span>
+        <small>Navigate</small>
+      </button>
+      <button class="nav-item-btn" data-action="scan">
+        <span class="material-symbols-outlined d-block">qr_code_scanner</span>
+        <small>Scan QR</small>
+      </button>
+      <button class="nav-item-btn text-danger" data-action="sos">
+        <span class="material-symbols-outlined d-block">warning</span>
+        <small>SOS</small>
+      </button>
+    </div>
+  </div>
+
+  <!-- QR Scanner Overlay -->
+  <div
+    id="qr-overlay"
+    class="position-absolute top-0 start-0 w-100 h-100 d-none flex-column justify-content-center align-items-center"
+    style="backdrop-filter: blur(16px); background: rgba(0, 0, 0, 0.6); z-index: 1200"
+  >
+    <div class="glass-card p-3 w-75" style="max-width: 400px">
+      <h6 class="mb-2">Scan Konza QR Checkpoint</h6>
+      <div id="qr-reader" style="width: 100%"></div>
+      <button id="close-qr" class="btn btn-sm btn-outline-light w-100 mt-2">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='/js/visitor_map.js') }}"></script>
+{% endblock %}
