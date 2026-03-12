@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+
+{% block head %}
+<style>
+  body,
+  html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div id="guide-app" class="vh-100 vw-100 position-relative bg-konza-light">
+  <!-- Side panel with popular locations -->
+  <aside
+    id="guide-panel"
+    class="position-absolute top-0 start-0 h-100 d-flex flex-column shadow-lg"
+    style="
+      width: 295px;
+      max-width: 80vw;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.96);
+      border-right: 1px solid rgba(0, 0, 0, 0.06);
+    "
+  >
+    <div class="d-flex align-items-center justify-content-between p-3 border-bottom">
+      <div>
+        <div class="small text-uppercase text-konza-muted">
+          Konza Visitor Guide
+        </div>
+        <div class="fw-semibold">Popular locations</div>
+      </div>
+      <a href="{{ url_for('landing') }}" class="btn btn-sm btn-link text-konza-muted"
+        >Home</a
+      >
+    </div>
+    <div class="p-3 border-bottom">
+      <div class="input-group input-group-sm rounded-pill overflow-hidden">
+        <span class="input-group-text bg-white border-0">
+          <span class="material-symbols-outlined">search</span>
+        </span>
+        <input
+          id="search-poi"
+          type="text"
+          class="form-control border-0"
+          placeholder="Search Konza POIs"
+        />
+      </div>
+      <small class="text-konza-muted d-block mt-2">
+        Press Enter to jump to a location.
+      </small>
+    </div>
+    <div
+      id="popular-list"
+      class="flex-grow-1 overflow-auto"
+      style="padding: 0.75rem 0.75rem 1rem"
+    ></div>
+  </aside>
+
+  <!-- Map -->
+  <div id="visitor-map" class="w-100 h-100"></div>
+
+  <!-- SOS helper -->
+  <div
+    class="position-absolute bottom-0 start-50 translate-middle-x mb-4 text-center"
+    style="z-index: 1000"
+  >
+    <div
+      class="px-3 py-2 rounded-pill shadow-sm bg-white bg-opacity-90 d-inline-flex align-items-center gap-2 small text-konza-muted"
+    >
+      <span class="material-symbols-outlined text-danger">warning</span>
+      <span>Tap SOS if you need immediate on-site assistance.</span>
+    </div>
+  </div>
+
+  <!-- SOS floating button -->
+  <button
+    id="sos-button"
+    class="btn btn-lg rounded-circle position-absolute d-flex align-items-center justify-content-center"
+    style="
+      right: 1.6rem;
+      bottom: 6rem;
+      width: 56px;
+      height: 56px;
+      z-index: 1100;
+      background: var(--konza-red);
+      color: #fff;
+      box-shadow: 0 0 25px rgba(226, 37, 29, 0.6);
+    "
+    title="Send SOS alert to Konza security"
+  >
+    <span class="material-symbols-outlined">sos</span>
+  </button>
+
+  <!-- Bottom Navigation -->
+  <div
+    class="position-absolute bottom-0 start-50 translate-middle-x mb-2 px-3 w-100"
+    style="max-width: 640px; z-index: 1050"
+  >
+    <div
+      class="glass-card nav-bottom d-flex justify-content-between px-3 py-2 align-items-center"
+    >
+      <button class="nav-item-btn active" data-action="map">
+        <span class="material-symbols-outlined d-block">explore</span>
+        <small>Map</small>
+      </button>
+      <button class="nav-item-btn" data-action="navigate">
+        <span class="material-symbols-outlined d-block">navigation</span>
+        <small>Guide</small>
+      </button>
+      <button class="nav-item-btn" data-action="scan">
+        <span class="material-symbols-outlined d-block">qr_code_scanner</span>
+        <small>Scan</small>
+      </button>
+      <button class="nav-item-btn text-danger" data-action="sos">
+        <span class="material-symbols-outlined d-block">warning</span>
+        <small>SOS</small>
+      </button>
+    </div>
+  </div>
+
+  <!-- QR Scanner Overlay -->
+  <div
+    id="qr-overlay"
+    class="position-absolute top-0 start-0 w-100 h-100 d-none flex-column justify-content-center align-items-center"
+    style="backdrop-filter: blur(16px); background: rgba(0, 0, 0, 0.6); z-index: 1200"
+  >
+    <div class="glass-card p-3 w-75" style="max-width: 400px">
+      <h6 class="mb-2">Scan Konza QR Checkpoint</h6>
+      <p class="small text-konza-muted mb-2">
+        Aim your camera at the QR code near you to update your indoor position.
+      </p>
+      <div id="qr-reader" style="width: 100%"></div>
+      <button id="close-qr" class="btn btn-sm btn-outline-dark w-100 mt-2">
+        Cancel
+      </button>
+    </div>
+  </div>
+
+  <!-- POI Detail Modal -->
+  <div
+    id="poi-modal"
+    class="position-absolute top-0 start-0 w-100 h-100 d-none justify-content-center align-items-center"
+    style="backdrop-filter: blur(18px); background: rgba(17, 24, 32, 0.65); z-index: 1300"
+  >
+    <div
+      class="bg-white rounded-4 shadow-lg overflow-hidden"
+      style="max-width: 720px; width: 94vw"
+    >
+      <div class="row g-0">
+        <div class="col-12 col-md-6">
+          <div class="ratio ratio-4x3">
+            <img
+              id="poi-image"
+              src=""
+              alt="POI image"
+              class="w-100 h-100 object-fit-cover"
+            />
+          </div>
+        </div>
+        <div class="col-12 col-md-6 d-flex flex-column">
+          <div class="p-3 p-md-4 flex-grow-1">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div>
+                <p class="small text-uppercase text-konza-muted mb-1">
+                  Konza Point of Interest
+                </p>
+                <h4 id="poi-title" class="fw-semibold mb-0 text-konza-dark"></h4>
+              </div>
+              <button
+                type="button"
+                id="poi-close"
+                class="btn btn-sm btn-outline-secondary rounded-circle"
+                aria-label="Close"
+              >
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <p
+              id="poi-type"
+              class="text-uppercase small fw-semibold text-konza-green mb-2"
+            ></p>
+            <p
+              id="poi-description"
+              class="small text-konza-muted mb-3"
+            ></p>
+            <div class="p-2 rounded-3 bg-konza-light">
+              <span
+                class="small text-uppercase fw-bold"
+                style="color: var(--konza-red)"
+                >Guru Fact</span
+              >
+              <p id="poi-fun-fact" class="small mb-0 text-konza-dark"></p>
+            </div>
+          </div>
+          <div class="border-top p-3 p-md-4 d-flex flex-column flex-md-row gap-2">
+            <button
+              id="poi-go"
+              class="btn btn-konza-primary flex-grow-1 fw-semibold"
+            >
+              LET'S GO
+            </button>
+            <button
+              id="poi-more"
+              class="btn btn-outline-dark flex-grow-1 fw-semibold"
+            >
+              Just show on map
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='/js/visitor_map.js') }}"></script>
+{% endblock %}
+

@@ -18,9 +18,6 @@ def get_db():
         db.close()
 
 
-# ---------- POIs ----------
-
-
 @router.get("/pois")
 def list_pois(db: Session = Depends(get_db)):
     pois = db.query(POI).all()
@@ -86,9 +83,6 @@ def delete_poi(poi_id: int, db: Session = Depends(get_db)):
     return {"status": "deleted"}
 
 
-# ---------- Visitor Tracking & Heatmap ----------
-
-
 @router.post("/visitor/location")
 async def update_visitor_location(payload: dict, db: Session = Depends(get_db)):
     required = ["visitor_id", "floor_id", "lat", "lng", "timestamp"]
@@ -112,7 +106,6 @@ async def update_visitor_location(payload: dict, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(location)
 
-    # Broadcast to WebSocket clients for live tracking
     await manager.broadcast(
         {
             "type": "location",
@@ -152,9 +145,6 @@ def visitor_stats(db: Session = Depends(get_db)):
         .count()
     )
     return {"total_visitors_today": total_today}
-
-
-# ---------- SOS ----------
 
 
 @router.post("/sos")
@@ -212,3 +202,4 @@ def list_sos(db: Session = Depends(get_db)):
         }
         for a in alerts
     ]
+

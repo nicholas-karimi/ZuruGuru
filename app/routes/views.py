@@ -19,9 +19,13 @@ def get_db():
 
 
 @router.get("/")
-def index(request: Request):
-    # Visitor map is data-driven via JS; no heavy server context required
+def landing(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
+
+
+@router.get("/guide")
+def guide(request: Request):
+    return templates.TemplateResponse("guide.html", {"request": request})
 
 
 @router.get("/admin/pois")
@@ -41,3 +45,4 @@ def admin_pois(request: Request, db: Session = Depends(get_db)):
 @router.get("/admin/security")
 def admin_security(request: Request):
     return templates.TemplateResponse("admin_security.html", {"request": request})
+

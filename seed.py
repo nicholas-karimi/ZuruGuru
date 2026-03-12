@@ -5,8 +5,7 @@ from app.database import Base, engine, SessionLocal
 from app.models import POI, VisitorLocation, SOSAlert
 
 
-def reset_database():
-    # Drop and recreate tables for a clean demo DB
+def reset_database() -> None:
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 
@@ -64,23 +63,18 @@ def seed_pois(db):
     db.commit()
 
 
-def seed_visitor_locations(db, days_back: int = 1, count: int = 200):
-    """
-    Seed dummy visitor locations around the Konza demo area
-    to power the heatmap.
-    """
+def seed_visitor_locations(db, days_back: int = 1, count: int = 220) -> None:
     base_lat = -1.5880
     base_lng = 37.1280
 
     now = datetime.utcnow()
     start_time = now - timedelta(days=days_back)
 
-    visitor_ids = [f"VISITOR-{i}" for i in range(1, 21)]
+    visitor_ids = [f"VISITOR-{i}" for i in range(1, 26)]
 
     locations = []
     for _ in range(count):
         visitor_id = random.choice(visitor_ids)
-        # small random walk around the base coordinates
         lat = base_lat + random.uniform(-0.0015, 0.0015)
         lng = base_lng + random.uniform(-0.0015, 0.0015)
         floor_id = random.choice([0, 1, 2])
@@ -102,12 +96,8 @@ def seed_visitor_locations(db, days_back: int = 1, count: int = 200):
     db.commit()
 
 
-def seed_sos_alerts(db):
-    """
-    Optionally seed a couple of past SOS alerts to demo security dashboard.
-    """
+def seed_sos_alerts(db) -> None:
     now = datetime.utcnow()
-
     alerts = [
         SOSAlert(
             visitor_id="VISITOR-EMERGENCY-1",
@@ -126,12 +116,11 @@ def seed_sos_alerts(db):
             status="open",
         ),
     ]
-
     db.add_all(alerts)
     db.commit()
 
 
-def main():
+def main() -> None:
     reset_database()
     db = SessionLocal()
     try:
@@ -145,3 +134,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

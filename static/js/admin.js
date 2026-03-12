@@ -1,15 +1,11 @@
 (function () {
   function isOnPoisPage() {
-    const table = document.getElementById("pois-table-body");
-    return !!table;
+    return !!document.getElementById("pois-table-body");
   }
 
   function isOnSecurityPage() {
-    const mapEl = document.getElementById("security-map");
-    return !!mapEl;
+    return !!document.getElementById("security-map");
   }
-
-  // -------- POI ADMIN --------
 
   function initPoiAdmin() {
     const form = document.getElementById("poi-form");
@@ -98,7 +94,6 @@
           alert("Unable to delete POI.");
         }
       } else if (tr.classList.contains("poi-row")) {
-        // load into form for editing
         const cells = tr.querySelectorAll("td");
         document.getElementById("poi-id").value = id;
         document.getElementById("poi-name").value = cells[0].textContent.trim();
@@ -106,14 +101,15 @@
         document.getElementById("poi-lat").value = cells[2].textContent.trim();
         document.getElementById("poi-lng").value = cells[3].textContent.trim();
 
-        // fetch details for description/fun_fact/image_url
         const res = await fetch("/api/pois");
         const pois = await res.json();
         const poi = pois.find((p) => String(p.id) === String(id));
         if (poi) {
-          document.getElementById("poi-description").value = poi.description || "";
+          document.getElementById("poi-description").value =
+            poi.description || "";
           document.getElementById("poi-fun-fact").value = poi.fun_fact || "";
-          document.getElementById("poi-image-url").value = poi.image_url || "";
+          document.getElementById("poi-image-url").value =
+            poi.image_url || "";
         }
       }
     });
@@ -121,8 +117,6 @@
     refreshPois();
     loadStats();
   }
-
-  // -------- SECURITY DASHBOARD --------
 
   function initSecurityDashboard() {
     const wsStatus = document.getElementById("ws-status");
@@ -152,7 +146,10 @@
       bearing: -20,
     });
 
-    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
+    map.addControl(
+      new maplibregl.NavigationControl({ showCompass: false }),
+      "bottom-right"
+    );
 
     const visitorMarkers = new Map();
 
@@ -183,10 +180,14 @@
           <div class="fw-semibold small">Visitor: ${alert.visitor_id}</div>
           <span class="badge bg-danger-subtle text-danger small">SOS</span>
         </div>
-        <div class="small text-muted mb-1">
-          Floor ${alert.floor_id} • ${new Date(alert.timestamp).toLocaleTimeString()}
+        <div class="small text-konza-muted mb-1">
+          Floor ${alert.floor_id} • ${new Date(
+            alert.timestamp
+          ).toLocaleTimeString()}
         </div>
-        <div class="small">Lat ${alert.lat.toFixed(5)}, Lng ${alert.lng.toFixed(5)}</div>
+        <div class="small">Lat ${alert.lat.toFixed(
+          5
+        )}, Lng ${alert.lng.toFixed(5)}</div>
       `;
       sosList.prepend(card);
     }
@@ -208,20 +209,20 @@
 
       ws.onopen = () => {
         wsStatus.textContent = "connected";
-        wsStatus.classList.remove("text-danger");
-        wsStatus.classList.add("text-success");
+        wsStatus.classList.remove("text-danger", "text-warning");
+        wsStatus.classList.add("text-konza-green");
       };
 
       ws.onclose = () => {
         wsStatus.textContent = "reconnecting…";
-        wsStatus.classList.remove("text-success");
+        wsStatus.classList.remove("text-konza-green", "text-danger");
         wsStatus.classList.add("text-warning");
         setTimeout(connectWebSocket, 3000);
       };
 
       ws.onerror = () => {
         wsStatus.textContent = "error";
-        wsStatus.classList.remove("text-success");
+        wsStatus.classList.remove("text-konza-green", "text-warning");
         wsStatus.classList.add("text-danger");
       };
 
@@ -229,13 +230,7 @@
         try {
           const data = JSON.parse(event.data);
           if (data.type === "location") {
-            const marker = getOrCreateVisitorMarker(
-              data.visitor_id,
-              data.lng,
-              data.lat
-            );
-            // Optionally pan slightly towards latest activity
-            // map.panTo(marker.getLngLat());
+            getOrCreateVisitorMarker(data.visitor_id, data.lng, data.lat);
           } else if (data.type === "sos") {
             addSosMarker(data.lng, data.lat);
             pushSosCard(data);
@@ -270,3 +265,4 @@
     bootstrapAdmin();
   }
 })();
+

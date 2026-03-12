@@ -1,15 +1,15 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
-from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.database import Base, engine
 from app.routes import api, views
 from app.websocket import manager
 
-# Ensure tables are created on startup
+# Ensure DB tables are created on startup
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="ZuruGuru - Konza Smart City Indoor Navigation")
+app = FastAPI(title="ZuruGuru • Konza Technopolis")
 
 app.add_middleware(
     CORSMiddleware,
@@ -30,9 +30,10 @@ async def websocket_endpoint(websocket: WebSocket):
     await manager.connect(websocket)
     try:
         while True:
-            # We do not need client messages for MVP; just keep connection open.
+            # Keep connection alive; we only broadcast from server side.
             await websocket.receive_text()
     except WebSocketDisconnect:
         manager.disconnect(websocket)
     except Exception:
         manager.disconnect(websocket)
+

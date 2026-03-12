@@ -2,140 +2,73 @@
 
 {% block head %}
 <style>
-  body,
-  html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden;
+  .hero-height {
+    min-height: 100vh;
   }
 </style>
 {% endblock %}
 
 {% block body %}
-<div id="visitor-app" class="vh-100 vw-100 position-relative">
-  <!-- Full-bleed Map -->
-  <div id="visitor-map" class="w-100 h-100"></div>
-
-  <!-- Floating Search Bar -->
-  <div
-    class="position-absolute top-0 start-50 translate-middle-x mt-3 px-3 w-100"
-    style="max-width: 540px; z-index: 1000"
+<main class="hero-height d-flex flex-column justify-content-between">
+  <section
+    class="container py-5 py-md-6 d-flex flex-column flex-md-row align-items-center hero-height"
   >
-    <div class="glass-card d-flex align-items-center px-3 py-2 shadow-lg">
-      <span class="material-symbols-outlined me-2">search</span>
-      <input
-        id="search-poi"
-        type="text"
-        class="form-control form-control-sm bg-transparent border-0 text-light"
-        placeholder="Where are you heading in Konza?"
-      />
-    </div>
-  </div>
-
-  <!-- SOS Button -->
-  <button
-    id="sos-button"
-    class="btn btn-lg rounded-pill position-absolute"
-    style="
-      right: 1.2rem;
-      bottom: 5.5rem;
-      z-index: 1000;
-      background: var(--konza-red);
-      color: #fff;
-      box-shadow: 0 0 25px rgba(226, 37, 29, 0.6);
-    "
-  >
-    SOS
-  </button>
-
-  <!-- Bottom Sheet -->
-  <div
-    id="poi-sheet"
-    class="bottom-sheet rounded-top-4 shadow-lg"
-    style="z-index: 1000"
-  >
-    <div
-      class="sheet-handle mx-auto my-2 rounded-pill"
-      style="width: 40px; height: 4px; background: rgba(255, 255, 255, 0.4)"
-    ></div>
-    <div id="poi-sheet-content" class="p-3">
-      <div class="ratio ratio-16x9 rounded-4 overflow-hidden mb-3">
-        <img
-          id="poi-image"
-          src=""
-          alt="POI Image"
-          class="w-100 h-100 object-fit-cover"
-        />
-      </div>
-      <h5 id="poi-title" class="fw-semibold mb-1"></h5>
-      <p id="poi-type" class="text-uppercase small text-success fw-semibold mb-2"></p>
-      <p id="poi-description" class="small text-muted mb-2"></p>
-      <div class="p-2 rounded-3 bg-dark bg-opacity-50 mb-3">
-        <span class="small text-uppercase fw-bold" style="color: var(--konza-green)"
-          >Guru Fact</span
+    <div class="col-12 col-md-6 mb-4 mb-md-0">
+      <p class="text-uppercase small fw-semibold text-konza-green mb-2">
+        Welcome to Konza Technopolis
+      </p>
+      <h1 class="display-4 fw-bold text-konza-dark mb-3 text-light">
+        Connect, explore, and navigate the future city.
+      </h1>
+      <p class="lead text-konza-muted mb-4">
+        ZuruGuru is your indoor guide to the Konza Visitor Experience — from
+        innovation hubs to art installations, find your next stop effortlessly.
+      </p>
+      <div class="d-flex flex-column flex-sm-row gap-2">
+        <a
+          href="{{ url_for('guide') }}"
+          class="btn btn-lg btn-konza-primary px-4"
         >
-        <p id="poi-fun-fact" class="small mb-0"></p>
+          Open Konza Guide
+        </a>
+        <button
+          type="button"
+          class="btn btn-lg btn-outline-dark bg-white border-0 shadow-sm px-4"
+        >
+          Learn about ZuruGuru
+        </button>
       </div>
-      <button
-        id="poi-go"
-        class="btn w-100 py-2 fw-semibold"
-        style="
-          background: linear-gradient(
-            135deg,
-            var(--konza-green),
-            var(--konza-red)
-          );
-          border: none;
-        "
-      >
-        LET'S GO
-      </button>
+      <div class="d-flex align-items-center gap-3 mt-4 small text-konza-muted">
+        <div class="d-flex align-items-center gap-2">
+          <span class="badge rounded-pill bg-info-subtle text-konza-green"
+            >Indoor-ready</span
+          >
+          <span>QR checkpoints • Voice guidance • Live safety</span>
+        </div>
+      </div>
     </div>
-  </div>
-
-  <!-- Bottom Navigation -->
-  <div
-    class="position-absolute bottom-0 start-50 translate-middle-x mb-2 px-3 w-100"
-    style="max-width: 540px; z-index: 1000"
-  >
-    <div class="glass-card nav-bottom d-flex justify-content-between px-3 py-2">
-      <button class="nav-item-btn active" data-action="map">
-        <span class="material-symbols-outlined d-block">explore</span>
-        <small>Map View</small>
-      </button>
-      <button class="nav-item-btn" data-action="navigate">
-        <span class="material-symbols-outlined d-block">navigation</span>
-        <small>Navigate</small>
-      </button>
-      <button class="nav-item-btn" data-action="scan">
-        <span class="material-symbols-outlined d-block">qr_code_scanner</span>
-        <small>Scan QR</small>
-      </button>
-      <button class="nav-item-btn text-danger" data-action="sos">
-        <span class="material-symbols-outlined d-block">warning</span>
-        <small>SOS</small>
-      </button>
+    <div class="col-12 col-md-6">
+      <div class="hero-preview shadow-lg rounded-4 overflow-hidden position-relative">
+        <div class="hero-map-placeholder"></div>
+        <div class="hero-float-card glass-card p-3">
+          <div class="small text-uppercase text-konza-muted mb-1">
+            Live inside Konza
+          </div>
+          <div class="fw-semibold mb-1">Visitor heatmap &amp; highlights</div>
+          <p class="small mb-0 text-konza-muted">
+            See where visitors are gathering and discover featured points of
+            interest before you even arrive.
+          </p>
+        </div>
+      </div>
     </div>
-  </div>
-
-  <!-- QR Scanner Overlay -->
-  <div
-    id="qr-overlay"
-    class="position-absolute top-0 start-0 w-100 h-100 d-none flex-column justify-content-center align-items-center"
-    style="backdrop-filter: blur(16px); background: rgba(0, 0, 0, 0.6); z-index: 1200"
-  >
-    <div class="glass-card p-3 w-75" style="max-width: 400px">
-      <h6 class="mb-2">Scan Konza QR Checkpoint</h6>
-      <div id="qr-reader" style="width: 100%"></div>
-      <button id="close-qr" class="btn btn-sm btn-outline-light w-100 mt-2">
-        Cancel
-      </button>
+  </section>
+  <footer class="py-3 border-top bg-white bg-opacity-75">
+    <div class="container small d-flex justify-content-between text-konza-muted">
+      <span>Konza Technopolis • Visitor Experience Pilot</span>
+      <span>ZuruGuru v0.1</span>
     </div>
-  </div>
-</div>
+  </footer>
+</main>
 {% endblock %}
 
-{% block scripts %}
-<script src="{{ url_for('static', path='/js/visitor_map.js') }}"></script>
-{% endblock %}

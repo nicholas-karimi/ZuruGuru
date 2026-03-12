@@ -2,13 +2,13 @@
 
 {% block body %}
 <div class="d-flex" style="min-height: 100vh">
-  <!-- Sidebar -->
   <aside
     class="d-flex flex-column p-3"
     style="
       width: 260px;
-      background: radial-gradient(circle at top, #101827, #020617);
-      border-right: 1px solid rgba(148, 163, 184, 0.2);
+      background: linear-gradient(180deg, var(--konza-black), #1f2933);
+      border-right: 1px solid rgba(148, 163, 184, 0.35);
+      color: var(--konza-light-text);
     "
   >
     <div class="d-flex align-items-center mb-4">
@@ -19,9 +19,10 @@
           height: 36px;
           background: linear-gradient(
             135deg,
-            var(--konza-red),
-            var(--konza-green)
+            var(--konza-green),
+            var(--konza-red)
           );
+          color: #fff;
         "
       >
         <span class="fw-bold">Z</span>
@@ -37,7 +38,7 @@
         class="nav-link mb-1 {% if request.url.path.startswith('/admin/pois') %}active{% endif %}"
         href="{{ url_for('admin_pois') }}"
       >
-        <span class="material-symbols-outlined me-1">location_on</span> POIs &amp;
+        <span class="material-symbols-outlined me-1">location_on</span> POIs &
         Insights
       </a>
       <a
@@ -55,9 +56,11 @@
     </div>
   </aside>
 
-  <!-- Main Content -->
-  <main class="flex-grow-1 p-3 p-md-4 bg-dark-subtle bg-gradient">
+  <main
+    class="flex-grow-1 p-3 p-md-4"
+    style="background: radial-gradient(circle at top, #f8fafc, #e5e7eb)"
+  >
     {% block admin_content %}{% endblock %}
   </main>
-</div>
 {% endblock %}
+

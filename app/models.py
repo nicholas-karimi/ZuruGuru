@@ -39,3 +39,4 @@ class SOSAlert(Base):
     lng = Column(Float, nullable=False)
     timestamp = Column(DateTime, default=datetime.utcnow, index=True, nullable=False)
     status = Column(String, default="open", nullable=False)
+
