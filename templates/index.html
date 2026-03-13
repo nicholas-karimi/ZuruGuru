@@ -10,17 +10,37 @@
 
 {% block body %}
 <main class="hero-height d-flex flex-column justify-content-between">
+  <nav class="position-fixed top-0 start-50 translate-middle-x w-100" style="z-index: 1050; max-width: 1100px; padding: 1rem 0;">
+    <div class="glass-card d-flex align-items-center justify-content-between px-3 py-2">
+      <div class="d-flex align-items-center gap-2">
+        <span class="d-flex align-items-center justify-content-center" style="width:32px;height:32px;">
+          <svg width="32" height="32" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#007A37" d="M60 4C34.8 4 14 24.8 14 50s46 74 46 74 46-40.1 46-74S85.2 4 60 4Z"/>
+            <path fill="#E2251D" d="M60 18c-17.7 0-32 14.3-32 32s32 50 32 50 32-36.3 32-50-14.3-32-32-32Z"/>
+            <path fill="#fff" d="M60 25c-11 0-20 9-20 20s20 31 20 31 20-20 20-31-9-20-20-20Z"/>
+          </svg>
+        </span>
+        <span class="fw-semibold mb-0">ZuruGuru</span>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="{{ url_for('landing') }}" class="btn btn-sm btn-dark">Home</a>
+        <a href="{{ url_for('guide') }}" class="btn btn-sm btn-danger">Guide</a>
+      </div>
+    </div>
+  </nav>
+
   <section
     class="container py-5 py-md-6 d-flex flex-column flex-md-row align-items-center hero-height"
+    style="padding-top: 5.5rem;"
   >
     <div class="col-12 col-md-6 mb-4 mb-md-0">
       <p class="text-uppercase small fw-semibold text-konza-green mb-2">
         Welcome to Konza Technopolis
       </p>
-      <h1 class="display-4 fw-bold text-konza-dark mb-3 text-light">
+      <h1 class="display-4 fw-bold text-light mb-3">
         Connect, explore, and navigate the future city.
       </h1>
-      <p class="lead text-konza-dark mb-4">
+      <p class="lead text-light mb-4">
         ZuruGuru is your indoor guide to the Konza Visitor Experience — from
         innovation hubs to art installations, find your next stop effortlessly.
       </p>
@@ -33,34 +53,30 @@
         </a>
         <button
           type="button"
-          class="btn btn-lg btn-outline-dark bg-dark text-white border-0 shadow-sm px-4"
+          class="btn btn-lg btn-outline-light border-0 shadow-sm px-4"
         >
           Learn about ZuruGuru
         </button>
       </div>
-      <div class="d-flex align-items-center gap-3 mt-4 small text-konza-muted">
+      <div class="d-flex align-items-center gap-3 mt-4 small text-white-50">
         <div class="d-flex align-items-center gap-2">
-          <span class="badge rounded-pill bg-success-subtle text-dark"
-            >Indoor-ready</span
-          >
+          <span class="badge rounded-pill bg-light text-dark">Indoor-ready</span>
           <span class="text-white">QR checkpoints • Voice guidance • Live safety</span>
         </div>
       </div>
     </div>
     <div class="col-12 col-md-6">
-      <!-- <div class="hero-preview shadow-lg rounded-4 overflow-hidden position-relative">
-        <div class="hero-map-placeholder"></div>
+      <div class="hero-preview shadow-lg rounded-4 overflow-hidden position-relative">
+        <div class="hero-map-placeholder" style="background-image:url('https://images.pexels.com/photos/3935702/pexels-photo-3935702.jpeg?auto=compress&cs=tinysrgb&h=650&w=940');"></div>
         <div class="hero-float-card glass-card p-3">
-          <div class="small text-uppercase text-konza-muted mb-1">
-            Live inside Konza
-          </div>
-          <div class="fw-semibold mb-1">Visitor heatmap &amp; highlights</div>
-          <p class="small mb-0 text-konza-muted">
+          <div class="small text-uppercase text-white-50 mb-1">Live inside Konza</div>
+          <div class="fw-semibold mb-1 text-white">Visitor heatmap &amp; highlights</div>
+          <p class="small mb-0 text-white-50">
             See where visitors are gathering and discover featured points of
             interest before you even arrive.
           </p>
         </div>
-      </div> -->
+      </div>
     </div>
   </section>
   <footer class="py-3 border-top bg-dark ">

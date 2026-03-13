@@ -17,7 +17,7 @@ def seed_pois(db):
             type="Hub",
             description="Central hub for startups and innovation showcases.",
             fun_fact="Konza Technopolis is often called the 'Silicon Savannah' of Africa.",
-            image_url="https://images.pexels.com/photos/37347/office-computer-typing-keyboard.jpg",
+            image_url="https://images.pexels.com/photos/7915260/pexels-photo-7915260.jpeg",
             lat=-1.5875,
             lng=37.1285,
         ),
@@ -56,6 +56,15 @@ def seed_pois(db):
             image_url="https://images.pexels.com/photos/380769/pexels-photo-380769.jpeg",
             lat=-1.5872,
             lng=37.1282,
+        ),
+        POI(
+            name="Konza Power Distribution Station (DS2)",
+            type="Energy",
+            description="The Konza Power Distribution Station (DS2) was commissioned by H.E Dr. William Ruto on 13th October 2025. The new distribution capacity enables Konza Technopolis to manage and distribute power internally across phase one of the development, significantly enhancing reliability and operational efficiency.",
+            fun_fact="Designed as an intelligent and resilient energy system, Konza Smart Energy forms a core component of the city’s smart infrastructure architecture.",
+            image_url="https://images.pexels.com/photos/4917803/pexels-photo-4917803.jpeg",
+            lat=-1.5877,
+            lng=37.1279,
         ),
     ]
 

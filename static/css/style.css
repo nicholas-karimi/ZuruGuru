@@ -13,9 +13,8 @@
 body {
   font-family: "Google Sans", system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
-  /* background: linear-gradient(to left, #007a37,#111820, #e2251d)!important; */
-  background: var(--konza-green) !important;
-  color: var(--konza-dark-text);
+  background: radial-gradient(circle at top, var(--konza-green), var(--konza-black) 70%) !important;
+  color: var(--konza-light-text);
 }
 
 .bg-konza-light {
@@ -60,7 +59,7 @@ body {
     linear-gradient(
         135deg,
         rgba(5, 40, 1, 0.6),
-        rgba(255, 255, 255, 0.9)
+        rgba(89, 5, 5, 0.9)
       )
       border-box;
   border-radius: 1.25rem;

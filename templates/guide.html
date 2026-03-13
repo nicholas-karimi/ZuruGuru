@@ -9,16 +9,40 @@
     height: 100%;
     overflow: hidden;
   }
+
+  #visitor-map {
+    height: calc(100% - 5.5rem);
+  }
 </style>
 {% endblock %}
 
 {% block body %}
-<div id="guide-app" class="vh-100 vw-100 position-relative bg-konza-light">
+<div id="guide-app" class="vh-100 vw-100 position-relative bg-konza-light" style="padding-top: 5.5rem;">
+  <nav class="position-fixed top-0 start-50 translate-middle-x w-100" style="z-index: 1100; max-width: 860px; padding: 0.75rem 0;">
+    <div class="glass-card d-flex align-items-center justify-content-between px-3 py-2">
+      <div class="d-flex align-items-center gap-2">
+        <span class="d-flex align-items-center justify-content-center" style="width:28px;height:28px;">
+          <svg width="28" height="28" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#007A37" d="M60 4C34.8 4 14 24.8 14 50s46 74 46 74 46-40.1 46-74S85.2 4 60 4Z"/>
+            <path fill="#E2251D" d="M60 18c-17.7 0-32 14.3-32 32s32 50 32 50 32-36.3 32-50-14.3-32-32-32Z"/>
+            <path fill="#fff" d="M60 25c-11 0-20 9-20 20s20 31 20 31 20-20 20-31-9-20-20-20Z"/>
+          </svg>
+        </span>
+        <span class="fw-semibold mb-0">ZuruGuru Guide</span>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="{{ url_for('landing') }}" class="btn btn-sm btn-outline-dark">Home</a>
+        <a href="{{ url_for('guide') }}" class="btn btn-sm btn-dark">Reload</a>
+      </div>
+    </div>
+  </nav>
+
   <!-- Side panel with popular locations -->
   <aside
     id="guide-panel"
-    class="position-absolute top-0 start-0 h-100 d-flex flex-column shadow-lg"
+    class="position-absolute start-0 h-100 d-flex flex-column shadow-lg"
     style="
+      top: 5.5rem;
       width: 295px;
       max-width: 80vw;
       z-index: 1000;
